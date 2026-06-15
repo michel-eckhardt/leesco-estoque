@@ -1,13 +1,18 @@
 import { PrismaClient } from "@prisma/client";
-import { PrismaNeon } from "@prisma/adapter-neon";
-import { neon } from "@neondatabase/serverless";
 
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
 
 const createPrismaClient = () => {
-  const sql = neon(process.env.DATABASE_URL!);
+  // Always use Neon adapter, it works with any PostgreSQL (including local)
+  const { PrismaNeon } = require("@prisma/adapter-neon");
+  const { sql } = require("@neondatabase/serverless");
+
   return new PrismaClient({
-    adapter: new PrismaNeon(sql as any),
+    adapter: new PrismaNeon(sql),
+    log:
+      process.env.NODE_ENV === "development"
+        ? ["error", "warn"]
+        : ["error"],
   });
 };
 
