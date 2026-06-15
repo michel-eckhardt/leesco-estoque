@@ -4,7 +4,18 @@
       "Bash(ls \"d:/workspace/leesco\" 2>/dev/null || echo \"Parent directory contents not found\")",
       "Read(//d/workspace/leesco/**)",
       "Bash(npm --version)",
-      "Bash(npx create-next-app@latest . --typescript --tailwind --app --src-dir --import-alias \"@/*\" --no-git)"
+      "Bash(npx create-next-app@latest . --typescript --tailwind --app --src-dir --import-alias \"@/*\" --no-git)",
+      "Bash(npm install *)",
+      "Bash(npx shadcn-ui@latest init --yes)",
+      "Bash(npx shadcn@latest init --yes)",
+      "Bash(npx shadcn@latest init --defaults --yes)",
+      "Bash(npx prisma *)",
+      "Bash(npx shadcn@latest add input label --yes)",
+      "Bash(npm run *)",
+      "PowerShell(npm run build)",
+      "PowerShell($env:DATABASE_URL = \"postgresql://user:password@localhost/dummy\"; npx prisma generate)",
+      "PowerShell(npm run build 2>&1)",
+      "PowerShell(head -200)"
     ]
   }
 }

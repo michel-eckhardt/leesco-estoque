@@ -1,0 +1,108 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id                 String       @id @default(cuid())
+  name               String
+  email              String       @unique
+  password           String
+  role               Role         @default(USER)
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+  stockAssignments   UserStock[]
+  withdrawals        Withdrawal[]
+
+  @@map("users")
+}
+
+model Stock {
+  id                 String       @id @default(cuid())
+  name               String       @unique
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+  userAssignments    UserStock[]
+  stockItems         StockItem[]
+  withdrawals        Withdrawal[]
+
+  @@map("stocks")
+}
+
+model UserStock {
+  userId             String
+  stockId            String
+  createdAt          DateTime     @default(now())
+  user               User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stock              Stock        @relation(fields: [stockId], references: [id], onDelete: Cascade)
+
+  @@id([userId, stockId])
+  @@map("user_stocks")
+}
+
+model Category {
+  id                 String       @id @default(cuid())
+  name               String       @unique
+  createdAt          DateTime     @default(now())
+  products           Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id                 String       @id @default(cuid())
+  name               String
+  photoUrl           String?
+  photoPublicId      String?
+  unit               Unit
+  categoryId         String
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+  category           Category     @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  stockItems         StockItem[]
+  withdrawals        Withdrawal[]
+
+  @@map("products")
+}
+
+model StockItem {
+  id                 String       @id @default(cuid())
+  stockId            String
+  productId          String
+  quantity           Decimal      @default(0) @db.Decimal(10, 3)
+  stock              Stock        @relation(fields: [stockId], references: [id], onDelete: Cascade)
+  product            Product      @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([stockId, productId])
+  @@map("stock_items")
+}
+
+model Withdrawal {
+  id                 String       @id @default(cuid())
+  stockId            String
+  productId          String
+  userId             String
+  quantity           Decimal      @db.Decimal(10, 3)
+  reason             String?
+  createdAt          DateTime     @default(now())
+  stock              Stock        @relation(fields: [stockId], references: [id])
+  product            Product      @relation(fields: [productId], references: [id])
+  user               User         @relation(fields: [userId], references: [id])
+
+  @@map("withdrawals")
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum Unit {
+  KG
+  METRO
+  LITRO
+  UNIDADE
+}
