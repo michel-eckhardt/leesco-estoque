@@ -1,15 +1,63 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { getStock } from "@/actions/stocks";
-import { formatDate, formatUnit } from "@/lib/utils";
+import { StockItemsTable } from "@/components/tables/stock-items-table";
+import { StockItemForm } from "@/components/forms/stock-item-form";
+import { formatDate } from "@/lib/utils";
 import { ArrowLeft } from "lucide-react";
+import { useEffect } from "react";
+import { getStockItems } from "@/actions/stock-items";
+import { getStock } from "@/actions/stocks";
 
-export default async function EstoqueDetalhePage({
+export default function EstoqueDetalhePage({
   params,
 }: {
   params: { id: string };
 }) {
-  const stock = await getStock(params.id);
+  const [stock, setStock] = useState<any>(null);
+  const [items, setItems] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [editingItem, setEditingItem] = useState<any>(null);
+  const [showForm, setShowForm] = useState(false);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const [stockData, itemsData] = await Promise.all([
+          getStock(params.id),
+          getStockItems(params.id),
+        ]);
+        setStock(stockData);
+        setItems(itemsData);
+      } catch (error) {
+        console.error("Erro ao carregar dados:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadData();
+  }, [params.id]);
+
+  const handleRefresh = async () => {
+    try {
+      const itemsData = await getStockItems(params.id);
+      setItems(itemsData);
+      setShowForm(false);
+      setEditingItem(null);
+    } catch (error) {
+      console.error("Erro ao atualizar:", error);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <p className="text-gray-500">Carregando...</p>
+      </div>
+    );
+  }
 
   if (!stock) {
     return (
@@ -39,53 +87,52 @@ export default async function EstoqueDetalhePage({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Produtos */}
-        <div className="bg-white rounded-lg border p-6">
-          <h2 className="text-xl font-semibold mb-4">Produtos no Estoque</h2>
-          {stock.stockItems.length === 0 ? (
-            <p className="text-gray-500">Nenhum produto neste estoque</p>
-          ) : (
-            <div className="space-y-3">
-              {stock.stockItems.map((item) => (
-                <div key={item.id} className="flex justify-between items-center p-3 bg-gray-50 rounded">
-                  <div>
-                    <p className="font-medium">{item.product.name}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-semibold">
-                      {item.quantity.toFixed(3)} {formatUnit(item.product.unit)}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+        <div className="lg:col-span-2 space-y-6">
+          <h2 className="text-xl font-semibold">Produtos no Estoque</h2>
+          <StockItemsTable
+            stockId={params.id}
+            items={items}
+            onEdit={(item) => {
+              setEditingItem(item);
+              setShowForm(true);
+            }}
+            onDelete={handleRefresh}
+          />
         </div>
 
-        {/* Usuários */}
-        <div className="bg-white rounded-lg border p-6">
-          <h2 className="text-xl font-semibold mb-4">Usuários Designados</h2>
-          {stock.userAssignments.length === 0 ? (
-            <p className="text-gray-500">Nenhum usuário designado</p>
-          ) : (
-            <div className="space-y-2">
-              {stock.userAssignments.map((assignment) => (
-                <div
-                  key={assignment.user.id}
-                  className="p-3 bg-gray-50 rounded"
-                >
-                  <p className="font-medium">{assignment.user.name}</p>
-                </div>
-              ))}
+        {/* Formulário */}
+        <div className="space-y-6">
+          {showForm ? (
+            <div className="bg-white rounded-lg border p-6 space-y-4">
+              <h3 className="text-lg font-semibold">
+                {editingItem ? "Atualizar Quantidade" : "Adicionar Produto"}
+              </h3>
+              <StockItemForm
+                stockId={params.id}
+                item={editingItem}
+                onSuccess={handleRefresh}
+                onCancel={() => {
+                  setShowForm(false);
+                  setEditingItem(null);
+                }}
+              />
             </div>
+          ) : (
+            <Button
+              onClick={() => setShowForm(true)}
+              className="w-full"
+            >
+              + Adicionar Produto
+            </Button>
           )}
         </div>
       </div>
 
       <div className="flex gap-2">
         <Link href={`/estoques/${stock.id}/editar`}>
-          <Button>Editar Estoque</Button>
+          <Button variant="outline">Editar Estoque</Button>
         </Link>
       </div>
     </div>
