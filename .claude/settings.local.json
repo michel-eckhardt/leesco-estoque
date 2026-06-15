@@ -15,7 +15,10 @@
       "PowerShell(npm run build)",
       "PowerShell($env:DATABASE_URL = \"postgresql://user:password@localhost/dummy\"; npx prisma generate)",
       "PowerShell(npm run build 2>&1)",
-      "PowerShell(head -200)"
+      "PowerShell(head -200)",
+      "PowerShell([Convert]::ToBase64String\\([System.Text.Encoding]::UTF8.GetBytes\\([System.Guid]::NewGuid\\(\\).ToString\\(\\) + [System.Guid]::NewGuid\\(\\).ToString\\(\\)\\)\\))",
+      "PowerShell(git add .)",
+      "PowerShell(git commit -m \"Fase 2: Autentica��o completa - formul�rio, sidebar, header, documenta��o\")"
     ]
   }
 }
