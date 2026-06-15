@@ -1,12 +1,8 @@
 import "dotenv/config";
 import { PrismaClient } from "@prisma/client";
-import { PrismaNeon } from "@prisma/adapter-neon";
-import { neon } from "@neondatabase/serverless";
 import bcrypt from "bcryptjs";
 
-const prisma = new PrismaClient({
-  adapter: new PrismaNeon(neon(process.env.DATABASE_URL!) as any),
-});
+const prisma = new PrismaClient();
 
 async function main() {
   console.log("🌱 Iniciando seed do banco de dados...");

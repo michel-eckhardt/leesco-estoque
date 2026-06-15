@@ -32,7 +32,8 @@
       "PowerShell(npx tsx debug-login.ts 2>&1)",
       "PowerShell(npm uninstall @prisma/client @prisma/adapter-neon prisma)",
       "PowerShell(npm install prisma@5 @prisma/client@5)",
-      "PowerShell(npx prisma generate)"
+      "PowerShell(npx prisma generate)",
+      "PowerShell(npx shadcn@latest add select --yes)"
     ]
   }
 }
