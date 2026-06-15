@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls \"d:/workspace/leesco\" 2>/dev/null || echo \"Parent directory contents not found\")",
+      "Read(//d/workspace/leesco/**)",
+      "Bash(npm --version)",
+      "Bash(npx create-next-app@latest . --typescript --tailwind --app --src-dir --import-alias \"@/*\" --no-git)"
+    ]
+  }
+}
