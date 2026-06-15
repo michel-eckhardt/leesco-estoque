@@ -26,7 +26,13 @@
       "PowerShell(taskkill /PID 60664 /F)",
       "PowerShell(npx tsx test-auth.ts)",
       "PowerShell(taskkill /IM node.exe /F)",
-      "PowerShell(taskkill /IM node.exe /F 2>$null)"
+      "PowerShell(taskkill /IM node.exe /F 2>$null)",
+      "PowerShell(npx tsx debug-login.ts)",
+      "PowerShell(npm install @prisma/adapter-postgres)",
+      "PowerShell(npx tsx debug-login.ts 2>&1)",
+      "PowerShell(npm uninstall @prisma/client @prisma/adapter-neon prisma)",
+      "PowerShell(npm install prisma@5 @prisma/client@5)",
+      "PowerShell(npx prisma generate)"
     ]
   }
 }
