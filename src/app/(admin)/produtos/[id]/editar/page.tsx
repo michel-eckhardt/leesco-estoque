@@ -7,9 +7,10 @@ import { ArrowLeft } from "lucide-react";
 export default async function EditarProdutoPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const product = await getProduct(params.id);
+  const { id } = await params;
+  const product = await getProduct(id);
 
   if (!product) {
     return (
@@ -24,20 +25,20 @@ export default async function EditarProdutoPage({
 
   return (
     <div className="space-y-6 max-w-2xl">
-      <div className="flex items-center gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-4">
         <Link href="/produtos">
           <Button variant="ghost" size="sm">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Voltar
           </Button>
         </Link>
-        <div>
-          <h1 className="text-3xl font-bold">Editar Produto</h1>
-          <p className="mt-1 text-gray-600">{product.name}</p>
+        <div className="min-w-0">
+          <h1 className="text-2xl sm:text-3xl font-bold break-words">Editar Produto</h1>
+          <p className="mt-1 text-gray-600 truncate">{product.name}</p>
         </div>
       </div>
 
-      <div className="bg-white rounded-lg border p-6">
+      <div className="bg-white rounded-lg border p-4 sm:p-6">
         <ProductForm product={product} />
       </div>
     </div>

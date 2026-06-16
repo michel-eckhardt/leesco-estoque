@@ -139,3 +139,43 @@ export async function deleteProduct(id: string) {
 
   revalidatePath("/produtos");
 }
+
+export async function getCategoriesWithCount() {
+  const session = await auth();
+  if (!session || session.user?.role !== "ADMIN") {
+    throw new Error("Unauthorized");
+  }
+
+  return prisma.category.findMany({
+    orderBy: { name: "asc" },
+    include: {
+      _count: {
+        select: { products: true },
+      },
+    },
+  });
+}
+
+export async function deleteCategory(id: string) {
+  const session = await auth();
+  if (!session || session.user?.role !== "ADMIN") {
+    throw new Error("Unauthorized");
+  }
+
+  // Check if category has products
+  const productCount = await prisma.product.count({
+    where: { categoryId: id },
+  });
+
+  if (productCount > 0) {
+    throw new Error(
+      "Não é possível deletar uma categoria que possui produtos"
+    );
+  }
+
+  await prisma.category.delete({
+    where: { id },
+  });
+
+  revalidatePath("/categorias");
+}

@@ -33,7 +33,10 @@
       "PowerShell(npm uninstall @prisma/client @prisma/adapter-neon prisma)",
       "PowerShell(npm install prisma@5 @prisma/client@5)",
       "PowerShell(npx prisma generate)",
-      "PowerShell(npx shadcn@latest add select --yes)"
+      "PowerShell(npx shadcn@latest add select --yes)",
+      "PowerShell(npm run dev 2>&1)",
+      "PowerShell(taskkill /PID 61360 /F)",
+      "PowerShell(taskkill /IM node.exe /F 2>&1)"
     ]
   }
 }

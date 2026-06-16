@@ -114,14 +114,11 @@ export function StockItemsTable({
                     <Edit2 className="h-4 w-4" />
                   </Button>
                   <AlertDialog open={deletingId === item.id}>
-                    <AlertDialogTrigger>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setDeletingId(item.id)}
-                      >
-                        <Trash2 className="h-4 w-4 text-red-600" />
-                      </Button>
+                    <AlertDialogTrigger
+                      onClick={() => setDeletingId(item.id)}
+                      className="inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground h-9 w-9 px-0"
+                    >
+                      <Trash2 className="h-4 w-4 text-red-600" />
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                       <AlertDialogTitle>Remover Produto?</AlertDialogTitle>

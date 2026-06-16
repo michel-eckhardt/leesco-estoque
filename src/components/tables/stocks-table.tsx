@@ -118,14 +118,11 @@ export function StocksTable({ stocks, onDelete }: StocksTableProps) {
                     </Button>
                   </Link>
                   <AlertDialog open={deletingId === stock.id}>
-                    <AlertDialogTrigger>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setDeletingId(stock.id)}
-                      >
-                        <Trash2 className="h-4 w-4 text-red-600" />
-                      </Button>
+                    <AlertDialogTrigger
+                      onClick={() => setDeletingId(stock.id)}
+                      className="inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground h-9 w-9 px-0"
+                    >
+                      <Trash2 className="h-4 w-4 text-red-600" />
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                       <AlertDialogTitle>Deletar Estoque?</AlertDialogTitle>
