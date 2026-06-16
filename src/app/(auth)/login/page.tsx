@@ -1,15 +1,16 @@
 import { LoginForm } from "@/components/forms/login-form";
+import { Logo } from "@/components/logo";
 
 export default function LoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4 py-12 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8">
         <div className="text-center">
-          <div className="inline-flex h-12 w-12 items-center justify-center rounded-lg bg-indigo-600 text-white mb-4">
-            <span className="text-2xl font-bold">📦</span>
+          <div className="inline-block mb-4">
+            <Logo />
           </div>
-          <h1 className="text-4xl font-bold tracking-tight text-gray-900">
-            Leesco
+          <h1 className="text-4xl font-bold tracking-tight text-blue-600">
+            OceanPact
           </h1>
           <p className="mt-2 text-base text-gray-600">
             Sistema de gestão de estoque

@@ -17,6 +17,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { signOut } from "next-auth/react";
+import { Logo } from "@/components/logo";
 
 const navItems = [
   {
@@ -90,7 +91,7 @@ export function AdminSidebar() {
         )}
       >
         <div className="flex h-14 items-center border-b px-6">
-          <h1 className="text-xl font-bold">Leesco</h1>
+          <Logo />
         </div>
 
         <nav className="space-y-2 p-4">
