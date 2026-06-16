@@ -103,7 +103,13 @@ export async function getWithdrawals(
     skip: offset,
   });
 
-  return withdrawals;
+  return withdrawals.map((w) => ({
+    ...w,
+    quantity:
+      typeof w.quantity === "object" && w.quantity?.toNumber
+        ? w.quantity.toNumber()
+        : Number(w.quantity),
+  }));
 }
 
 export async function getStockWithdrawals(stockId: string) {
@@ -123,5 +129,11 @@ export async function getStockWithdrawals(stockId: string) {
     take: 100,
   });
 
-  return withdrawals;
+  return withdrawals.map((w) => ({
+    ...w,
+    quantity:
+      typeof w.quantity === "object" && w.quantity?.toNumber
+        ? w.quantity.toNumber()
+        : Number(w.quantity),
+  }));
 }
